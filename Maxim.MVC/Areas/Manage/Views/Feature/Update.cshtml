@@ -1,0 +1,17 @@
+﻿@using Maxim.Business.ViewModels.Feature
+@model UpdateFeatureVm
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Title">Example label</label>
+        <input asp-for="Title" type="text" class="form-control" placeholder="Title">
+    </div>
+    <div class="form-group">
+        <label asp-for="IconUrl">Another label</label>
+        <input type="text" class="form-control" asp-for="IconUrl" placeholder="IconUrl">
+    </div>
+    <div class="form-group">
+        <label asp-for="Description">Description</label>
+        <textarea class="form-control" asp-for="Description" rows="3"></textarea>
+    </div>
+    <button type="submit" asp-action="Update" asp-controller="Feature">Submit</button>
+</form>
