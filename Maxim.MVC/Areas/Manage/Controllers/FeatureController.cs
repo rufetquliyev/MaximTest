@@ -3,6 +3,7 @@ using Maxim.Business.Services.Interfaces;
 using Maxim.Business.ViewModels.Feature;
 using Maxim.Business.ViewModels.User;
 using Maxim.Core.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Maxim.MVC.Areas.Manage.Controllers
@@ -18,17 +19,20 @@ namespace Maxim.MVC.Areas.Manage.Controllers
             _featureService = featureService;
             _mapper = mapper;
         }
-
+        [Authorize(Roles ="Admin, Moderator")]
         public async Task<IActionResult> Index()
         {
             IQueryable<Feature> features = await _featureService.GetAllAsync();
             return View(features);
         }
+        [Authorize(Roles = "Admin, Moderator")]
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
+        [Authorize(Roles = "Admin, Moderator")]
+
         public async Task<IActionResult> Create(CreateFeatureVm vm)
         {
             CreateFeatureValidator validationRes = new CreateFeatureValidator();
@@ -43,7 +47,8 @@ namespace Maxim.MVC.Areas.Manage.Controllers
             }
             await _featureService.CreateAsync(vm);
             return RedirectToAction("Index");
-        } 
+        }
+        [Authorize(Roles = "Admin, Moderator")]
         public async Task<IActionResult> Update(int id)
         {
             var feature = await _featureService.GetByIdAsync(id);
@@ -51,6 +56,8 @@ namespace Maxim.MVC.Areas.Manage.Controllers
             return View(vm);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin, Moderator")]
+
         public async Task<IActionResult> Update(UpdateFeatureVm vm)
         {
             UpdateFeatureValidator validationRes = new UpdateFeatureValidator();
@@ -66,6 +73,7 @@ namespace Maxim.MVC.Areas.Manage.Controllers
             await _featureService.UpdateAsync(vm);
             return RedirectToAction("Index");
         }
+        [Authorize(Roles = "Admin, Moderator")]
         public async Task<IActionResult> Delete(int id)
         {
             await _featureService.Delete(id);
